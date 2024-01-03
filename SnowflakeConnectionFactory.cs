@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Odbc;
 using System.Linq;
+using Snowflake.Data.Client;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
 
@@ -25,22 +25,24 @@ namespace DbUp.Snowflake
                 })
                 .ToDictionary(x => x.Key, y => y.Value);
 
-            if (!connection.ContainsKey("database"))
+            if (!(connection.ContainsKey("database") || connection.ContainsKey("db")))
                 throw new ArgumentException("Connection string does not have database parameter");
             if (!connection.ContainsKey("warehouse"))
                 throw new ArgumentException("Connection string does not have warehouse parameter");
 
             ConnectionString = connectionString;
-            Database = connection["database"];
+            Database = connection.ContainsKey("database") ? connection["database"] : connection["db"];
             Warehouse = connection["warehouse"];
         }
         public IDbConnection CreateConnection(IUpgradeLog upgradeLog, DatabaseConnectionManager databaseConnectionManager)
         {
-            var connection = new OdbcConnection(ConnectionString);
+            var connection = new SnowflakeDbConnection(ConnectionString);
             connection.Open();
-            var useWHcommand = new OdbcCommand($"use warehouse {Warehouse}", connection);
+            using var useWHcommand = connection.CreateCommand();
+            useWHcommand.CommandText = $"use warehouse {Warehouse}";
             useWHcommand.ExecuteNonQuery();
-            var useDBcommand = new OdbcCommand($"use database {Database}", connection);
+            using var useDBcommand = connection.CreateCommand();
+            useDBcommand.CommandText = $"use database {Database}";
             useDBcommand.ExecuteScalar();
             return connection;
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Odbc;
+using Snowflake.Data.Client;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
@@ -26,9 +26,9 @@ namespace DbUp.Snowflake
             {
                 executeCallback();
             }
-            catch (OdbcException ex)
+            catch (SnowflakeDbException ex)
             {
-                Log().WriteInformation("Snowflake exception has occured in script: '{0}'", script.Name);
+                Log().WriteInformation("Snowflake exception has occurred in script: '{0}'", script.Name);
                 Log().WriteError(ex.ToString());
                 throw;
             }
