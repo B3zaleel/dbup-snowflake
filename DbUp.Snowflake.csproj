@@ -14,8 +14,8 @@
     <Version>0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="dbup-core" Version="5.0.37" />
-    <PackageReference Include="Snowflake.Data" Version="2.1.5" />
+    <PackageReference Include="dbup-core" Version="5.0.76" />
+    <PackageReference Include="Snowflake.Data" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
