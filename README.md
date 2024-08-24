@@ -25,7 +25,7 @@ namespace MyNamespace
             var connectionString = "getThisFromSomewhereSecret";
             var upgrader =
                 DeployChanges.To
-                    .SnowflakeDatabase($"DSN=snowflake;{connectionString}", "JOURNAL_SCHEMA")
+                    .SnowflakeDatabase(connectionString)
                     .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                     .LogToConsole()
                     .Build();

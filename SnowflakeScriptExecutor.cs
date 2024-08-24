@@ -29,7 +29,8 @@ namespace DbUp.Snowflake
             catch (SnowflakeDbException ex)
             {
                 Log().WriteInformation("Snowflake exception has occurred in script: '{0}'", script.Name);
-                Log().WriteError(ex.ToString());
+                Log().WriteError("Script block number: {0}; Error Code: {1}; Message: {2}", index, ex.ErrorCode, ex.Message);
+                Log().WriteError("{0}", ex);
                 throw;
             }
         }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using DbUp.Engine.Transactions;
+using Snowflake.Data.Client;
 
 namespace DbUp.Snowflake
 {
@@ -14,7 +15,7 @@ namespace DbUp.Snowflake
         /// Creates a new Snowflake database connection.
         /// </summary>
         /// <param name="connectionString">The Snowflake connection string.</param>
-        public SnowflakeConnectionManager(string connectionString) : base(new SnowflakeConnectionFactory(connectionString))
+        public SnowflakeConnectionManager(string connectionString) : base(upgradeLog => new SnowflakeDbConnection(connectionString))
         {
         }
 
